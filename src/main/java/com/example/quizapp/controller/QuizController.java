@@ -7,7 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.quizapp.model.QuestionWrapper;
+import com.example.quizapp.model.Response;
 import com.example.quizapp.service.QuizService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/quiz")
@@ -23,8 +26,13 @@ public class QuizController {
     }
 
     @GetMapping("/get/{id}")
-    public ResponseEntity<List<QuestionWrapper>> getQuizQuestions(@RequestParam Integer id) {
+    public ResponseEntity<List<QuestionWrapper>> getQuizQuestions(@PathVariable Integer id) {
         return quizService.getQuizQuestions(id);
+    }
+
+    @PostMapping("/submit/{id}")
+    public ResponseEntity<Integer> submitQuiz(@PathVariable Integer id, @RequestBody List<Response> responses) {
+        return quizService.calculateResult(id, responses);
     }
 
 }
